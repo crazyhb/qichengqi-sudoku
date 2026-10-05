@@ -1,0 +1,19 @@
+{
+  "name": "团团 5×5 数独",
+  "short_name": "团团5×5",
+  "lang": "zh-CN",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#eaf2ff",
+  "theme_color": "#eaf2ff",
+  "description": "手机速玩的团团 5×5 数独：每行每列填入 1–5 各一次。",
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
