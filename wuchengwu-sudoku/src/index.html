@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#eaf2ff" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="description" content="团团 5×5 数独：手机速玩。每行每列填入 1–5 各一次，没有宫格。" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="团团5×5" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <title>团团 5×5 数独</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./app.js"></script>
+  </head>
+  <body>
+    <div class="app" id="app">
+      <header class="top">
+        <div class="brand">
+          <button class="mascot" id="btn-rules" type="button" aria-label="团团说规则">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <ellipse cx="32" cy="36" rx="24" ry="22" fill="#ffb57a" />
+              <ellipse cx="32" cy="34" rx="20" ry="18" fill="#ffd2a8" />
+              <circle cx="24" cy="33" r="3.2" fill="#3b2418" />
+              <circle cx="40" cy="33" r="3.2" fill="#3b2418" />
+              <circle cx="25.2" cy="31.8" r="1" fill="#fff" />
+              <circle cx="41.2" cy="31.8" r="1" fill="#fff" />
+              <path d="M28 41c2.2 2.4 5.8 2.4 8 0" fill="none" stroke="#e85d3a" stroke-width="2.2" stroke-linecap="round" />
+              <ellipse cx="20" cy="40" rx="4" ry="2.4" fill="#ff8d6a" opacity=".7" />
+              <ellipse cx="44" cy="40" rx="4" ry="2.4" fill="#ff8d6a" opacity=".7" />
+            </svg>
+          </button>
+          <div class="titles">
+            <p class="eyebrow">团团速玩</p>
+            <h1>5×5 数独</h1>
+          </div>
+          <div class="clock" aria-live="polite">
+            <small>用时</small>
+            <strong id="hud-time">00:00</strong>
+          </div>
+        </div>
+        <div class="hud">
+          <span class="pill" id="hud-diff">简单</span>
+          <span class="pill" id="hud-left">剩 8 格</span>
+          <span class="pill" id="hud-mistakes">失误 0</span>
+        </div>
+      </header>
+
+      <div class="board-wrap">
+        <div id="board" class="board" role="grid" aria-label="团团 5 乘 5 数独棋盘"></div>
+      </div>
+
+      <div class="pad" id="pad" role="group" aria-label="数字键盘"></div>
+
+      <nav class="toolbar" aria-label="游戏操作">
+        <button type="button" id="btn-new" class="primary-action">新局</button>
+        <button type="button" id="btn-undo">撤销</button>
+        <button type="button" id="btn-hint">提示</button>
+        <button type="button" id="btn-diff">难度</button>
+        <button type="button" id="btn-notes" aria-pressed="false">笔记</button>
+        <button type="button" id="btn-check">检查</button>
+      </nav>
+
+      <p class="status" id="status" aria-live="polite">团团：点格子，再点数字。</p>
+    </div>
+
+    <dialog class="sheet" id="dlg-rules">
+      <form method="dialog" class="sheet-body">
+        <div class="sheet-mascot" aria-hidden="true">团团</div>
+        <h2>团团怎么玩</h2>
+        <p>这是手机版 <strong>5×5 数独</strong>。5 是质数，没有宫格，专心看好行和列就行。</p>
+        <ul>
+          <li>每一行填入 <strong>1–5 各一次</strong></li>
+          <li>每一列填入 <strong>1–5 各一次</strong></li>
+          <li>深色数字是线索，团团不让改</li>
+          <li>点空格只是选中它，再用下面的数字键填入</li>
+          <li>「笔记」可以先标候选，不怕忘</li>
+        </ul>
+        <p class="small">
+          更简单：<a href="https://crazyhb.github.io/tuantuan-2x2/">团团 2×2</a> ·
+          更难：<a href="https://crazyhb.github.io/qichengqi-sudoku/">团团 7×7</a>
+        </p>
+        <button type="submit" class="primary" value="ok">团团知道了</button>
+      </form>
+    </dialog>
+
+    <dialog class="sheet" id="dlg-new">
+      <form method="dialog" class="sheet-body">
+        <h2>换一盘</h2>
+        <p class="muted">点「新局」立刻再来当前难度。想加快或放慢，选下面。</p>
+        <div class="choice-row">
+          <button type="submit" value="easy">简单</button>
+          <button type="submit" value="medium">中等</button>
+          <button type="submit" value="hard">困难</button>
+        </div>
+        <button type="submit" value="restart">重开本题</button>
+        <button type="submit" class="ghost" value="cancel">取消</button>
+      </form>
+    </dialog>
+
+    <dialog class="sheet" id="dlg-win">
+      <div class="sheet-body">
+        <div class="win-burst" aria-hidden="true"></div>
+        <h2>团团鼓掌！</h2>
+        <p id="win-copy">这盘 5×5 收工了。</p>
+        <dl class="stats" id="win-stats"></dl>
+        <div class="choice-row">
+          <button type="button" class="primary" id="btn-again">再来一局</button>
+          <button type="button" id="btn-win-close">看看棋盘</button>
+        </div>
+      </div>
+    </dialog>
+
+    <div id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "wuchengwu-sudoku",
+  "private": true,
+  "type": "module",
+  "description": "团团 5×5 数独：单文件构建与手机端 Playwright 回归",
+  "scripts": {
+    "build": "node build.mjs",
+    "serve": "node tests/serve.mjs 4173",
+    "test": "node build.mjs && playwright test",
+    "test:live": "BASE_URL=https://crazyhb.github.io/wuchengwu-sudoku/ playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0"
+  }
+}
